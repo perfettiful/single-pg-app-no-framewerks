@@ -1,4 +1,9 @@
-const navigatesTo = url =>{
+import Dashboard from './views/Dashboard.js'
+import Posts from './views/Posts.js'
+import Settings from './views/Settings.js'
+
+
+const navigatesTo = url => {
     history.pushState(null, null, url);
     router();
 }
@@ -9,21 +14,15 @@ const router = async () => {
 
         {
             path: '/',
-            view: () => {
-                console.log('Viewing Dashboard')
-            }
+            view: Dashboard
         },
         {
             path: '/posts',
-            view: () => {
-                console.log('Viewing Posts')
-            }
+            view: Posts
         },
         {
             path: '/settings',
-            view: () => {
-                console.log('Viewing Settings')
-            }
+            view: Settings
         }
     ];
 
@@ -45,7 +44,11 @@ const router = async () => {
         }
     }
 
-    console.log(potentialMatches, match.route.view())
+    const view = new match.route.view();
+
+    document.querySelector('#app').innerHTML = await view.getHtml();
+
+    console.log(potentialMatches)
 
 
 }; //end anon async router fct def
@@ -54,7 +57,7 @@ window.addEventListener('popstate', router)
 
 document.addEventListener('DOMContentLoaded', () => {
     document.body.addEventListener('click', e => {
-        if(e.target.matches("[data-link]")){
+        if (e.target.matches("[data-link]")) {
             e.preventDefault();
             navigatesTo(e.target.href)
         }
