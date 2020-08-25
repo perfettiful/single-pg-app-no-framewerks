@@ -1,3 +1,9 @@
+const navigatesTo = url =>{
+    history.pushState(null, null, url);
+    router();
+}
+
+
 const router = async () => {
     const routes = [
 
@@ -44,6 +50,15 @@ const router = async () => {
 
 }; //end anon async router fct def
 
+window.addEventListener('popstate', router)
+
 document.addEventListener('DOMContentLoaded', () => {
+    document.body.addEventListener('click', e => {
+        if(e.target.matches("[data-link]")){
+            e.preventDefault();
+            navigatesTo(e.target.href)
+        }
+    })
+
     router()
 })
